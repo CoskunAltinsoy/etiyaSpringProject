@@ -2,6 +2,8 @@ package com.etiya.northwind.business.responses.orders;
 
 import java.time.LocalDate;
 
+import com.etiya.northwind.entities.concretes.Employee;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,9 @@ private int orderId;
 	
 	private int employeeId;
 	
-	private String employeeFirstName;
+	private String firstName;
+	
+	private String employeeFullName;
+	
+
 }
