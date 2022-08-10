@@ -6,4 +6,5 @@ import com.etiya.northwind.entities.concretes.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer>{
 
+	Employee findById(int id);
 }

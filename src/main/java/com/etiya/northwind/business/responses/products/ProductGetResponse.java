@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductListResponse {
+public class ProductGetResponse {
 
-	private int productId;
-	
 	private String productName;
 	
 	private double unitPrice;
 	
 	private int unitsInStock;
+	
+	private int discontinued;
 	
 	private int categoryId;
 

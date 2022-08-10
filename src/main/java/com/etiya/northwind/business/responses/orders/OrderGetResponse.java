@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderListResponse {
-private int orderId;
-	
+public class OrderGetResponse {
+
 	private LocalDate orderDate;
 
 	private LocalDate requiredDate;
@@ -24,9 +23,5 @@ private int orderId;
 	
 	private int employeeId;
 	
-	private String firstName;
-	
 	private String employeeFullName;
-	
-
 }
