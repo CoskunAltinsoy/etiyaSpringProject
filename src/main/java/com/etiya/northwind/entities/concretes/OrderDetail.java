@@ -30,12 +30,18 @@ public class OrderDetail {
 	private double discount;
 	
 	@Id
+	@Column(name="order_id")
+	private int orderId;
+	
 	@ManyToOne
-	@JoinColumn(name="order_id")
+	@JoinColumn(name="order_id",insertable = false, updatable = false)
 	private Order order;
 	
 	@Id
+	@Column(name="product_id")
+	private int productId;
+	
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name="product_id",insertable = false, updatable = false)
 	private Product product;
 }

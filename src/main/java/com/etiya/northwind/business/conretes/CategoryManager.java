@@ -13,6 +13,10 @@ import com.etiya.northwind.business.requests.categories.UpdateCategoryRequest;
 import com.etiya.northwind.business.responses.categories.CategoryGetResponse;
 import com.etiya.northwind.business.responses.categories.CategoryListResponse;
 import com.etiya.northwind.core.utilities.mapping.ModelMapperService;
+import com.etiya.northwind.core.utilities.results.DataResult;
+import com.etiya.northwind.core.utilities.results.Result;
+import com.etiya.northwind.core.utilities.results.SuccessDataResult;
+import com.etiya.northwind.core.utilities.results.SuccessResult;
 import com.etiya.northwind.dataAccess.abstracts.CategoryRepository;
 import com.etiya.northwind.entities.concretes.Category;
 
@@ -31,42 +35,44 @@ public class CategoryManager implements CategoryService{
 
 
 	@Override
-	public void add(CreateCategoryRequest createCategoryRequest) {
+	public Result add(CreateCategoryRequest createCategoryRequest) {
 		Category category = this.modelMapperService.forRequest()
 				.map(createCategoryRequest,Category.class);
 		this.categoryRepository.save(category);
+		return new SuccessResult();
 	}
 
 	@Override
-	public void delete(DeleteCategoryRequest deleteCategoryRequest) {
+	public Result delete(DeleteCategoryRequest deleteCategoryRequest) {
 		this.categoryRepository.deleteById(deleteCategoryRequest.getCategoryId());
+		return new SuccessResult();
 		
 	}
 
 	@Override
-	public void update(UpdateCategoryRequest updateCategoryRequest) {
+	public Result update(UpdateCategoryRequest updateCategoryRequest) {
 		Category category = this.modelMapperService.forRequest()
 				.map(updateCategoryRequest, Category.class);
 		this.categoryRepository.save(category);
-		
+		return new SuccessResult();
 	}
 
 	@Override
-	public CategoryGetResponse getById(int id) {
+	public DataResult<CategoryGetResponse> getById(int id) {
 		Category category = this.categoryRepository.findById(id);
 		CategoryGetResponse response = this.modelMapperService.forResponse()
 				.map(category, CategoryGetResponse.class);
-		return response;
+		return new SuccessDataResult<CategoryGetResponse>(response);
 	}
 	
 
 	@Override
-	public List<CategoryListResponse> getAll() {
+	public DataResult<List<CategoryListResponse>> getAll() {
 		List<Category> result = this.categoryRepository.findAll();
 		List<CategoryListResponse> response = result.stream().map(category -> this.modelMapperService.forResponse()
 				.map(category, CategoryListResponse.class)).collect(Collectors.toList());
 		
-		return response;
+		return new SuccessDataResult<List<CategoryListResponse>>(response);
 	}
 
 }

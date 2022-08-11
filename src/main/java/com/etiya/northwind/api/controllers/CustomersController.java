@@ -15,6 +15,8 @@ import com.etiya.northwind.business.requests.customers.DeleteCustomerRequest;
 import com.etiya.northwind.business.requests.customers.UpdateCustomerRequest;
 import com.etiya.northwind.business.responses.customers.CustomerGetResponse;
 import com.etiya.northwind.business.responses.customers.CustomerListResponse;
+import com.etiya.northwind.core.utilities.results.DataResult;
+import com.etiya.northwind.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/customers/")
@@ -26,27 +28,27 @@ public class CustomersController {
 	}
 	
 	@PostMapping("add")
-    public void add(@RequestBody CreateCustomerRequest createCustomerRequest) {
-        this.customerService.add(createCustomerRequest);
+    public Result add(@RequestBody CreateCustomerRequest createCustomerRequest) {
+        return this.customerService.add(createCustomerRequest);
     }
 
     @PostMapping("delete")
-    public void delete(@RequestBody DeleteCustomerRequest deleteCustomerRequest) {
-        this.customerService.delete(deleteCustomerRequest);
+    public Result delete(@RequestBody DeleteCustomerRequest deleteCustomerRequest) {
+        return this.customerService.delete(deleteCustomerRequest);
     }
 
     @PostMapping("update")
-    public void update(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
-        this.customerService.update(updateCustomerRequest);
+    public Result update(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
+        return this.customerService.update(updateCustomerRequest);
     }
 
-    @GetMapping("/getbyid")
-    public CustomerGetResponse getById(@RequestParam String customerId) {
+    @GetMapping("getbyid")
+    public DataResult<CustomerGetResponse>  getById(@RequestParam String customerId) {
         return this.customerService.getById(customerId);
     }
 	
 	@GetMapping("getall")
-	public List<CustomerListResponse> getAll(){
+	public DataResult<List<CustomerListResponse>>  getAll(){
 		return this.customerService.getAll();
 	}
 }

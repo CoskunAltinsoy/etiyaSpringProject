@@ -28,7 +28,8 @@ public class OrderDetailManager implements OrderDetailService{
 
 	@Override
 	public void add(CreateOrderDetailRequest createOrderDetailRequest) {
-		// TODO Auto-generated method stub
+		OrderDetail orderDetail = this.modelMapperService.forRequest().map(createOrderDetailRequest, OrderDetail.class);
+		this.orderDetailRepository.save(orderDetail);
 		
 	}
 
