@@ -16,13 +16,13 @@ import com.etiya.northwind.business.requests.products.DeleteProductRequest;
 import com.etiya.northwind.business.requests.products.UpdateProductRequest;
 import com.etiya.northwind.business.responses.products.ProductGetResponse;
 import com.etiya.northwind.business.responses.products.ProductListResponse;
+import com.etiya.northwind.core.utilities.exceptions.BusinessException;
 import com.etiya.northwind.core.utilities.mapping.ModelMapperService;
 import com.etiya.northwind.core.utilities.results.DataResult;
 import com.etiya.northwind.core.utilities.results.Result;
 import com.etiya.northwind.core.utilities.results.SuccessDataResult;
 import com.etiya.northwind.core.utilities.results.SuccessResult;
 import com.etiya.northwind.dataAccess.abstracts.ProductRepository;
-import com.etiya.northwind.entities.concretes.Category;
 import com.etiya.northwind.entities.concretes.Product;
 
 @Service
@@ -43,6 +43,7 @@ public class ProductManager implements ProductService{
 	@Override
 	public Result add(CreateProductRequest createProductRequest){
 		checkProductCount(createProductRequest.getCategoryId());
+		checkIfProductNameExist(createProductRequest.getProductName());
 		Product product = this.modelMapperService.forRequest()
 				              .map(createProductRequest, Product.class);
 		this.productRepository.save(product);
@@ -141,7 +142,15 @@ public class ProductManager implements ProductService{
 		}
 		
 		if (count > 15) {
-			System.out.println("15 i geçemez");
+			throw new BusinessException("15 i geçemez.");
+		}
+	}
+	
+	private void checkIfProductNameExist(String productName) {
+		for (Product product : this.productRepository.findAll()) {
+			if (product.getProductName().equals(productName)) {
+				throw new BusinessException("Already Exist");
+			}
 		}
 	}
 }

@@ -14,38 +14,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name="customers")
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
-
+@Entity
+@Table(name = "cities")
+public class City {
+	
 	@Id
-	@Column(name="customer_id")
-	private String customerId;
+	@Column(name = "city_id")
+	private int cityId;
 	
-	@Column(name="company_name")
-	private String companyName;
-	
-	@Column(name="contact_name")
-	private String contactName;
-	
-	@Column(name="contact_title")
-	private String contactTitle;
-	
-	@Column(name="address")
-	private String address;
-	
-	
-	@OneToMany(mappedBy = "customer")
-	private List<Order> orders;
+	@Column(name = "city_name")
+	private String cityName;
 	
 	@ManyToOne
 	@JoinColumn(name = "country_id")
 	private Country country;
 	
-	@ManyToOne
-	@JoinColumn(name = "city_id")
-	private City city;
+	@OneToMany(mappedBy = "city")
+	private List<Supplier> suppliers;
+	
+	@OneToMany(mappedBy="city")
+	private List<Customer> customers;
+	
+	@OneToMany(mappedBy = "city")
+	private List<Employee> employees;
 }

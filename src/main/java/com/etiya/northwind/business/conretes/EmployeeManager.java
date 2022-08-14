@@ -11,6 +11,7 @@ import com.etiya.northwind.business.requests.employees.DeleteEmployeeRequest;
 import com.etiya.northwind.business.requests.employees.UpdateEmployeeRequest;
 import com.etiya.northwind.business.responses.employees.EmployeeGetResponse;
 import com.etiya.northwind.business.responses.employees.EmployeeListResponse;
+import com.etiya.northwind.core.utilities.exceptions.BusinessException;
 import com.etiya.northwind.core.utilities.mapping.ModelMapperService;
 import com.etiya.northwind.core.utilities.results.DataResult;
 import com.etiya.northwind.core.utilities.results.Result;
@@ -33,6 +34,7 @@ public class EmployeeManager implements EmployeeService {
 
 	@Override
 	public Result add(CreateEmployeeRequest createEmployeeRequest) {
+		checkIfEmployeeReports(createEmployeeRequest.getReportsTo());
 		Employee employee = this.modelMapperService.forRequest()
 				.map(createEmployeeRequest, Employee.class);
 		this.employeeRepository.save(employee);
@@ -69,6 +71,19 @@ public class EmployeeManager implements EmployeeService {
 		List<EmployeeListResponse> response = result.stream().map(employee -> this.modelMapperService.forResponse()
 				                               .map(employee, EmployeeListResponse.class)).collect(Collectors.toList());
 		return new SuccessDataResult<List<EmployeeListResponse>>(response);
+	}
+	
+	private void checkIfEmployeeReports(Integer reportsTo) {
+		int count=0;
+		for (Employee employee : this.employeeRepository.findAll()) {
+			if (employee.getReportsTo() == reportsTo) {
+				count++;
+			}
+		}
+		
+		if(count>5) {
+			throw new  BusinessException("greater Than 5");		
+		}
 	}
 
 }

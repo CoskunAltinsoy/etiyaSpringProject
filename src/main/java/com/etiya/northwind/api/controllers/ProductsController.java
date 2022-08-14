@@ -2,6 +2,8 @@ package com.etiya.northwind.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,7 @@ public class ProductsController {
 	}
 	
 	@PostMapping("add")
-    public Result add(@RequestBody CreateProductRequest createProductRequest) {
+    public Result add(@Valid @RequestBody CreateProductRequest createProductRequest) {
         return  this.productService.add(createProductRequest);
     }
 

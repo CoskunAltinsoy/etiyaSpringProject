@@ -12,6 +12,7 @@ import com.etiya.northwind.business.requests.categories.DeleteCategoryRequest;
 import com.etiya.northwind.business.requests.categories.UpdateCategoryRequest;
 import com.etiya.northwind.business.responses.categories.CategoryGetResponse;
 import com.etiya.northwind.business.responses.categories.CategoryListResponse;
+import com.etiya.northwind.core.utilities.exceptions.BusinessException;
 import com.etiya.northwind.core.utilities.mapping.ModelMapperService;
 import com.etiya.northwind.core.utilities.results.DataResult;
 import com.etiya.northwind.core.utilities.results.Result;
@@ -36,6 +37,7 @@ public class CategoryManager implements CategoryService{
 
 	@Override
 	public Result add(CreateCategoryRequest createCategoryRequest) {
+		checkIfCategoryNameExist(createCategoryRequest.getCategoryName());
 		Category category = this.modelMapperService.forRequest()
 				.map(createCategoryRequest,Category.class);
 		this.categoryRepository.save(category);
@@ -73,6 +75,14 @@ public class CategoryManager implements CategoryService{
 				.map(category, CategoryListResponse.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<CategoryListResponse>>(response);
+	}
+	
+	private void checkIfCategoryNameExist(String categoryName) {
+		for (Category category : this.categoryRepository.findAll()) {
+			if (category.getCategoryName().equals(categoryName)) {
+				throw new BusinessException("Already Exist");
+			}
+		}
 	}
 
 }

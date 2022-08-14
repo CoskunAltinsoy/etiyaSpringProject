@@ -5,9 +5,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,7 +24,6 @@ import lombok.NoArgsConstructor;
 public class Employee {
 	@Id
 	@Column(name = "employee_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int employeeId;
 	
 	@Column(name = "first_name")
@@ -41,7 +41,19 @@ public class Employee {
 	@Column(name="address")
 	private String address;
 	
+	@Column(name ="reports_to")
+	private Integer reportsTo;
+	
+	
 	@OneToMany(mappedBy = "employee")
 	private List<Order> orders;
+	
+	@ManyToOne
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	@ManyToOne
+	@JoinColumn(name = "city_id")
+	private City city;
 }
 
